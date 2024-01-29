@@ -48,6 +48,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.tiptime.ui.theme.TipTimeTheme
 import java.text.NumberFormat
 
@@ -69,6 +70,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun TipTimeLayout() {
+    var amountInput by remember { mutableStateOf("") }
+    val amount = amountInput.toDoubleOrNull() ?: 0.0
+    val tip = calculateTip(amount)
+
     Column(
         modifier = Modifier
             .statusBarsPadding()
@@ -83,33 +88,33 @@ fun TipTimeLayout() {
             modifier = Modifier
                 .padding(bottom = 16.dp, top = 40.dp)
                 .align(alignment = Alignment.Start)
-                .border(2.dp, Color.Red)
         )
-        EditNumberField(modifier = Modifier
-            .padding(bottom = 32.dp)
-            .fillMaxWidth())
+        EditNumberField(value = amountInput,
+            onValueChange = { amountInput = it },
+            modifier = Modifier
+                .padding(bottom = 32.dp)
+                .fillMaxWidth())
         Text(
-            text = stringResource(R.string.tip_amount, "$0.00"),
+            text = stringResource(R.string.tip_amount, tip),
             style = MaterialTheme.typography.displaySmall,
-            modifier = Modifier.border(2.dp, Color.Red)
         )
         Spacer(modifier = Modifier.height(150.dp))
     }
 }
 
 @Composable
-fun EditNumberField(modifier: Modifier = Modifier) {
-    var amountInput by remember { mutableStateOf("") }
-
+fun EditNumberField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     TextField(
-        label = { Text(text = stringResource(id = R.string.bill_amount)) },
+        value = value,
+        onValueChange = onValueChange,
         singleLine = true,
+        label = { Text(text = stringResource(id = R.string.bill_amount)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-
-        value = amountInput,
-        onValueChange = { amountInput = it },
         modifier = modifier
-            .border(2.dp, Color.Red)
     )
 }
 
@@ -125,7 +130,7 @@ private fun calculateTip(amount: Double, tipPercent: Double = 15.0): String {
 
 @Preview(
     showBackground = true,
-    //showSystemUi = true
+    showSystemUi = true
 )
 @Composable
 fun TipTimeLayoutPreview() {
