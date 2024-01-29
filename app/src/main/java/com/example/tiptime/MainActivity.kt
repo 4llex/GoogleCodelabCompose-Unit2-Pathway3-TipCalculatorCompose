@@ -36,6 +36,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -93,10 +97,13 @@ fun TipTimeLayout() {
 
 @Composable
 fun EditNumberField(modifier: Modifier = Modifier) {
+    var amountInput by remember { mutableStateOf("") }
+
     TextField(
-        value = "",
-        onValueChange = {},
+        value = amountInput,
+        onValueChange = { amountInput = it },
         modifier = modifier
+            .border(2.dp, Color.Red)
     )
 }
 
