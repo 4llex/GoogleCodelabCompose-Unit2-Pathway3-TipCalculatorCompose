@@ -85,10 +85,10 @@ fun TipTimeLayout() {
 
     Column(
         modifier = Modifier
-            .statusBarsPadding()
+            //.statusBarsPadding()
             .padding(horizontal = 40.dp)
-            .verticalScroll(rememberScrollState())
-            .safeDrawingPadding(),
+            .verticalScroll(rememberScrollState()),
+            //.safeDrawingPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
